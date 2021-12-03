@@ -152,7 +152,7 @@ async function fetchLeaderboard(
 const formatTime = (timestamp: number) =>
     dateformat(new Date(timestamp * 1000), "H:MM")
 
-const cmpMembers = (a: MemberFirstStar, b: MemberFirstStar) => {
+const cmpMembers = (a: MemberDay, b: MemberDay) => {
     if (a.secondStar && b.secondStar) {
         return a.secondStar - b.secondStar
     }
@@ -162,7 +162,16 @@ const cmpMembers = (a: MemberFirstStar, b: MemberFirstStar) => {
     if (b.secondStar) {
         return 1
     }
-    return a.firstStar - b.firstStar
+    if (a.firstStar && b.firstStar) {
+        return a.firstStar - b.firstStar
+    }
+    if (a.firstStar) {
+        return -1
+    }
+    if (b.firstStar) {
+        return 1
+    }
+    return 0
 }
 
 const cmpFirstStar = (a: MemberFirstStar, b: MemberFirstStar) =>
@@ -185,25 +194,23 @@ interface EntryFormatOptions {
 function formatPositionChange(
     leaderboardPosition: number,
     previousLeaderboardPosition: number,
-    totalEntries: number,
+    totalEntries: number
 ) {
     const change = previousLeaderboardPosition - leaderboardPosition
 
-    const positionSpacesRequired =
-        Math.log10(totalEntries) - Math.floor(Math.log10(leaderboardPosition)) + 1
-    const positionSpacing = "".padEnd(positionSpacesRequired)
+    const positionStr = String(leaderboardPosition).padStart(1 + Math.log10(totalEntries) | 0)
 
     if (change === 0) {
-        return `${leaderboardPosition}`
+        return positionStr
     }
     if (change > 0) {
-        return `${leaderboardPosition}${positionSpacing}(🔺 +${change})`
+        return `${positionStr} (🔺 +${change})`
     }
-    return `${leaderboardPosition}${positionSpacing}(🔻 ${change})`
+    return `${positionStr} (🔻 ${change})`
 }
 
 function formatEntry(
-    member: MemberFirstStar,
+    member: MemberDay,
     {
         position,
         totalEntries,
@@ -213,10 +220,12 @@ function formatEntry(
     }: EntryFormatOptions
 ) {
     const name = (member.name || `<anonymous ${member.id}>`).padEnd(largestName)
-    const firstStarTime = formatTime(member.firstStar).padEnd(5)
-    const secondStarText = member.secondStar
-        ? `    🌟: ${formatTime(member.secondStar).padEnd(5)}`
-        : "             "
+    const firstStarTime = member.firstStar
+        ? `⭐: ${formatTime(member.firstStar).padEnd(5)}`
+        : "         "
+    const secondStarTime = member.secondStar
+        ? `🌟: ${formatTime(member.secondStar).padEnd(5)}`
+        : "         "
     const positionSpacesRequired =
         Math.log10(totalEntries) - Math.floor(Math.log10(position)) + 1
     const positionSpacing = "".padEnd(positionSpacesRequired)
@@ -226,11 +235,13 @@ function formatEntry(
         totalEntries
     )
 
-    return `${position}.${positionSpacing}${name} ⭐️: ${firstStarTime}${secondStarText}    ${positionChange}`
+    return `${position}.${positionSpacing}${name}    ${firstStarTime}    ${secondStarTime}    ${positionChange}`
 }
 
 function formatLeaderboard({ members, day }: LeaderboardDay) {
-    const activeMembers = Object.values(members).filter(solvedFirst)
+    const activeMembers = Object.values(members).filter(
+        member => member.localScore
+    )
     const largestName = Math.max(
         ...activeMembers.map(member => {
             const name = member.name || `<anonymous ${member.id}>`
@@ -268,7 +279,7 @@ function formatLeaderboard({ members, day }: LeaderboardDay) {
         )
         .join("\n")
 
-    return `Todays ranking (day ${day}):\`\`\`\n${formattedLeaderboard}\`\`\``
+    return `Today's rankings (day ${day}):\`\`\`\n${formattedLeaderboard}\`\`\``
 }
 
 function computeScores(members: MemberDay[]) {
