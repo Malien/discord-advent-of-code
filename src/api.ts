@@ -1,6 +1,9 @@
 import fetch from "node-fetch"
+import pino from "pino"
 import { Leaderboard } from "./leaderboard.js"
 import { Member } from "./member.js"
+
+const logger = pino()
 
 export class ResponseError extends Error {
     constructor(public status: number, public response: string) {
@@ -52,9 +55,8 @@ export async function fetchLeaderboard(
     session: string
 ): Promise<Leaderboard> {
     const url = `https://adventofcode.com/${year}/leaderboard/private/view/${leaderboardId}.json`
-    console.log(
-        `Requesting leaderboard ${leaderboardId} for year ${year}: ${url}`
-    )
+    logger.info({ leaderboardId, year, url }, "Requesting leaderboard")
+    const start = performance.now()
     const res = await fetch(url, {
         headers: {
             Accept: "application/json",
@@ -62,8 +64,14 @@ export async function fetchLeaderboard(
         },
     })
     if (!res.ok) {
-        throw new ResponseError(res.status, await res.text())
+        const contents = await res.text()
+        logger.error(
+            { status: res.status, contents },
+            "Advent of code responded with an error"
+        )
+        throw new ResponseError(res.status, contents)
     }
     const leaderboard = (await res.json()) as APILeaderboard
+    logger.info({ took: performance.now() - start }, "Received AoC leaderboard")
     return toDomainLeaderboard(leaderboard)
 }

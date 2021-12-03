@@ -7,8 +7,6 @@ const clientId = process.env.DISCORD_CLIENT
 if (!token) throw new Error("Discord token is not provided")
 if (!clientId) throw new Error("Client id is not provided")
 
-console.log({ token, clientId })
-
 const rest = new REST({ version: '9' }).setToken(token)
 
 const command = new SlashCommandBuilder()
