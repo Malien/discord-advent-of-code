@@ -101,7 +101,7 @@ export function formatLeaderboard({ members, day }: LeaderboardDay) {
         )
         .join("\n")
 
-    return `Today's rankings (day ${day}):\`\`\`\n${formattedLeaderboard}\`\`\``
+    return `Day ${day} rankings:\n\`\`\`\n${formattedLeaderboard}\`\`\``
 }
 
 export function computeScores(members: MemberDay[]) {
