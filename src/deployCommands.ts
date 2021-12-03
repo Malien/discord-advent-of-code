@@ -2,8 +2,8 @@ import { REST } from "@discordjs/rest"
 import { SlashCommandBuilder } from "@discordjs/builders"
 import { Routes } from "discord-api-types/v9";
 
-const token = process.env.TOKEN
-const clientId = process.env.CLIENT
+const token = process.env.DISCORD_TOKEN
+const clientId = process.env.DISCORD_CLIENT
 if (!token) throw new Error("Discord token is not provided")
 if (!clientId) throw new Error("Client id is not provided")
 

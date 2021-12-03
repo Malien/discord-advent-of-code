@@ -1,6 +1,4 @@
 .env
 node_modules
-deployCommands.js
-index.js
 yarn-error.log
-tsconfig.tsbuildinfo
+out

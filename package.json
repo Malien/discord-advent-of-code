@@ -1,7 +1,7 @@
 {
   "name": "discord-advent-of-code",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "out/index.js",
   "author": "Malien",
   "type": "module",
   "license": "MIT",
