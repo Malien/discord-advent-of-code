@@ -1,0 +1,5 @@
+.env
+node_modules
+deployCommand.js
+index.js
+yarn-error.log
