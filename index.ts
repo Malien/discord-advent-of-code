@@ -9,7 +9,8 @@ const aocSession = process.env.AOC_SESSION
 if (!token) throw new Error("Discord token is not provided")
 if (!clientId) throw new Error("Client id is not provided")
 if (!leaderboardId) throw new Error("Leaderboard id is not provided")
-if (!aocSession) throw new Error("Advent of code session cookie is not provided")
+if (!aocSession)
+    throw new Error("Advent of code session cookie is not provided")
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
 client.once("ready", () => {
@@ -85,6 +86,16 @@ const cmpMembersByDay = (day: number) => (a: Member, b: Member) => {
 }
 
 function formatLeaderboard(leaderboard: Leaderboard, day: number) {
+    const activeMembers = Object.values(leaderboard.members).filter(
+        member => member.completion_day_level[day]
+    )
+    const largestName = Math.max(
+        ...activeMembers.map(member => {
+            const name = member.name || `<anonymous ${member.id}>`
+            return name.length
+        })
+    )
+
     const formattedLeaderboard = Object.values(leaderboard.members)
         .filter(member => member.completion_day_level[day])
         .sort(cmpMembersByDay(day))
@@ -92,21 +103,26 @@ function formatLeaderboard(leaderboard: Leaderboard, day: number) {
             const name = member.name || `<anonymous ${member.id}>`
             const firstStarTime = formatTime(
                 member.completion_day_level[day][1].get_star_ts
-            )
+            ).padEnd(5, " ")
+            const nameSpaces = Array(largestName - name.length)
+                .fill(" ")
+                .join("")
             const secondTimestamp =
                 member.completion_day_level[day][2]?.get_star_ts
             const secondStarText = secondTimestamp
-                ? `\t🌟: ${formatTime(secondTimestamp)}`
+                ? `    🌟: ${formatTime(secondTimestamp)}`
                 : ""
-            return `${idx + 1}. ${name}\t⭐️: ${firstStarTime}${secondStarText}`
+            const pos = idx + 1
+            return `${pos}. ${name}${nameSpaces} ⭐️: ${firstStarTime}${secondStarText}`
         })
         .join("\n")
 
-    return `Todays ranking (day ${day}):\n${formattedLeaderboard}`
+    return `Todays ranking (day ${day}):\`\`\`\n${formattedLeaderboard}\`\`\``
 }
 
 const competitionStart = new Date(2021, 11, 1, 5, 0)
 const currentCompetitionDay = () =>
+    //@ts-ignore
     Math.ceil((Date.now() - competitionStart) / (24 * 60 * 60 * 1000))
 
 client.on("interactionCreate", async interaction => {
