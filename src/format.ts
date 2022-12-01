@@ -1,10 +1,10 @@
-import { format } from "date-fns-tz"
+import datefns from "date-fns-tz"
 import { YEAR, TIMEZONE } from "./config.js"
 import { LeaderboardDay } from "./leaderboard.js"
 import { MemberDay, cmpLocalScore, cmpFirstStar, cmpSecondStar, cmpMembers, solvedFirst, solvedSecond } from "./member.js"
 
 const formatTime = (timestamp: number) =>
-    format(new Date(timestamp * 1000), "H:MM", { timeZone: TIMEZONE })
+    datefns.formatInTimeZone(new Date(timestamp * 1000), TIMEZONE, "H:MM")
 
 export interface EntryFormatOptions {
     position: number
