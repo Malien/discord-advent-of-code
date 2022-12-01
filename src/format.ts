@@ -4,7 +4,7 @@ import { LeaderboardDay } from "./leaderboard.js"
 import { MemberDay, cmpLocalScore, cmpFirstStar, cmpSecondStar, cmpMembers, solvedFirst, solvedSecond } from "./member.js"
 
 const formatTime = (timestamp: number) =>
-    datefns.formatInTimeZone(new Date(timestamp * 1000), TIMEZONE, "H:MM")
+    datefns.formatInTimeZone(new Date(timestamp * 1000), TIMEZONE, "H:mm")
 
 export interface EntryFormatOptions {
     position: number
