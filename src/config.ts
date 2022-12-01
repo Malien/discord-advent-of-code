@@ -3,6 +3,7 @@ export const {
     LEADERBOARD,
     AOC_SESSION,
     TELEGRAM_TOKEN,
+    TIMEZONE,
 } = process.env as Record<string, string>
 if (!DISCORD_TOKEN) throw new Error("Discord token is not provided")
 if (!LEADERBOARD) throw new Error("Leaderboard id is not provided")
