@@ -1,4 +1,5 @@
 import dateformat from "dateformat"
+import { YEAR } from "./config.js"
 import { LeaderboardDay } from "./leaderboard.js"
 import { MemberDay, cmpLocalScore, cmpFirstStar, cmpSecondStar, cmpMembers, solvedFirst, solvedSecond } from "./member.js"
 
@@ -120,7 +121,7 @@ export function computeScores(members: MemberDay[]) {
     return scores
 }
 
-const competitionStart = new Date(2021, 11, 1, 5, 0)
+const competitionStart = new Date(YEAR, 11, 1, 5, 0)
 export const currentCompetitionDay = () =>
     //@ts-ignore
     Math.ceil((Date.now() - competitionStart) / (24 * 60 * 60 * 1000))
