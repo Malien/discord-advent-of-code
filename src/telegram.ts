@@ -2,7 +2,7 @@ import pino, { Logger } from "pino"
 import { Telegraf } from "telegraf"
 import { v4 as uuid } from "uuid"
 import { fetchLeaderboard } from "./api.js"
-import { AOC_SESSION, LEADERBOARD, TELEGRAM_TOKEN } from "./config.js"
+import { AOC_SESSION, LEADERBOARD, TELEGRAM_TOKEN, YEAR } from "./config.js"
 import { currentCompetitionDay, formatLeaderboard } from "./format.js"
 import { leaderboardForDay } from "./leaderboard.js"
 
@@ -20,7 +20,7 @@ export default async function createTelegramBot({
         try {
             const leaderboard = await fetchLeaderboard(
                 LEADERBOARD,
-                2021,
+                YEAR,
                 AOC_SESSION
             )
             const forToday = leaderboardForDay(
@@ -39,7 +39,7 @@ export default async function createTelegramBot({
         try {
             const leaderboard = await fetchLeaderboard(
                 LEADERBOARD,
-                2021,
+                YEAR,
                 AOC_SESSION
             )
             const forToday = leaderboardForDay(

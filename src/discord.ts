@@ -2,7 +2,7 @@ import { Client, Intents } from "discord.js"
 import pino, { Logger } from "pino"
 import { fetchLeaderboard } from "./api.js"
 import { currentCompetitionDay, formatLeaderboard } from "./format.js"
-import { AOC_SESSION, DISCORD_TOKEN, LEADERBOARD } from "./config.js"
+import { AOC_SESSION, DISCORD_TOKEN, LEADERBOARD, YEAR } from "./config.js"
 import { leaderboardForDay } from "./leaderboard.js"
 
 export interface DiscordBotOptions {
@@ -40,7 +40,7 @@ export default function startDiscordBot({
 
                 const leaderboard = await fetchLeaderboard(
                     LEADERBOARD,
-                    2021,
+                    YEAR,
                     AOC_SESSION
                 )
                 const forToday = leaderboardForDay(
