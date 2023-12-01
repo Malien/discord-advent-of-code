@@ -1,4 +1,4 @@
-import { Member, MemberDay, memberForDay } from "./member.js";
+import { Member, MemberDay, memberForDay } from "./member.js"
 
 export interface Leaderboard {
     ownerId: string
@@ -15,7 +15,7 @@ export interface LeaderboardDay {
 
 export const leaderboardForDay = (
     { members, ...rest }: Leaderboard,
-    day: number
+    day: number,
 ): LeaderboardDay => ({
     ...rest,
     day,

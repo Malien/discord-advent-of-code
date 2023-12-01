@@ -12,39 +12,39 @@ export interface TelegramBotOptions {
 
 export default async function createTelegramBot({
     logger = pino(),
-}: TelegramBotOptions) {
+}: TelegramBotOptions = {}) {
     const bot = new Telegraf(TELEGRAM_TOKEN)
 
-    bot.command("today", async ctx => {
+    bot.command("today", async (ctx) => {
         logger.info({ sender: ctx.senderChat }, "Received /today command")
         try {
             const leaderboard = await fetchLeaderboard(
                 LEADERBOARD,
                 YEAR,
-                AOC_SESSION
+                AOC_SESSION,
             )
             const forToday = leaderboardForDay(
                 leaderboard,
-                currentCompetitionDay()
+                currentCompetitionDay(),
             )
-            ctx.replyWithMarkdown(formatLeaderboard(forToday))
+            ctx.replyWithMarkdownV2(formatLeaderboard(forToday))
         } catch (e) {
             logger.error(e, "Error occurred while handling /today command")
         }
     })
 
-    bot.on("inline_query", async ctx => {
+    bot.on("inline_query", async (ctx) => {
         logger.info(ctx.inlineQuery, "Received inline query")
 
         try {
             const leaderboard = await fetchLeaderboard(
                 LEADERBOARD,
                 YEAR,
-                AOC_SESSION
+                AOC_SESSION,
             )
             const forToday = leaderboardForDay(
                 leaderboard,
-                currentCompetitionDay()
+                currentCompetitionDay(),
             )
 
             ctx.answerInlineQuery([
@@ -55,7 +55,7 @@ export default async function createTelegramBot({
                     input_message_content: {
                         message_text: formatLeaderboard(forToday).replaceAll(
                             /[()]/g,
-                            ""
+                            "",
                         ),
                         parse_mode: "Markdown",
                     },

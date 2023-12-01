@@ -6,7 +6,10 @@ import { Member } from "./member.js"
 const logger = pino()
 
 export class ResponseError extends Error {
-    constructor(public status: number, public response: string) {
+    constructor(
+        public status: number,
+        public response: string,
+    ) {
         super(`Error response from advent of code: ${status} - ${response}`)
     }
 }
@@ -52,7 +55,7 @@ const toDomainLeaderboard = (lb: APILeaderboard): Leaderboard => ({
 export async function fetchLeaderboard(
     leaderboardId: string,
     year: number,
-    session: string
+    session: string,
 ): Promise<Leaderboard> {
     const url = `https://adventofcode.com/${year}/leaderboard/private/view/${leaderboardId}.json`
     logger.info({ leaderboardId, year, url }, "Requesting leaderboard")
@@ -67,7 +70,7 @@ export async function fetchLeaderboard(
         const contents = await res.text()
         logger.error(
             { status: res.status, contents },
-            "Advent of code responded with an error"
+            "Advent of code responded with an error",
         )
         throw new ResponseError(res.status, contents)
     }
