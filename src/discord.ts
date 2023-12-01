@@ -1,4 +1,4 @@
-import { Client, Intents } from "discord.js"
+import { Client, GatewayIntentBits } from "discord.js"
 import pino, { Logger } from "pino"
 import { fetchLeaderboard } from "./api.js"
 import { currentCompetitionDay, formatLeaderboard } from "./format.js"
@@ -12,7 +12,7 @@ export interface DiscordBotOptions {
 export default function startDiscordBot({
     logger = pino(),
 }: DiscordBotOptions = {}) {
-    const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
+    const client = new Client({ intents: [GatewayIntentBits.Guilds] })
     client.once("ready", () => {
         logger.info("Application is ready and goin")
     })

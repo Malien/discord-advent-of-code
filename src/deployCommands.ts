@@ -1,6 +1,4 @@
-import { REST } from "@discordjs/rest"
-import { SlashCommandBuilder } from "@discordjs/builders"
-import { Routes } from "discord-api-types/v9"
+import { REST, SlashCommandBuilder, Routes } from "discord.js"
 
 const token = process.env.DISCORD_TOKEN
 const clientId = process.env.DISCORD_CLIENT
