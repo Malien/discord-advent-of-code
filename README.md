@@ -18,4 +18,4 @@ To run this bad boy, supply a couple of env variables, namely:
 Build with `tsc`
 Just to register discord commands, run `node out/deployCommands.js` once in the bot lifetime
 Run with `node out/index.js`
-If pretty printed and persisted logs is your forte `./setup.sh`
+If pretty printed and persisted logs is your forte `./start.sh`
