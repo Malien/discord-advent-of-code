@@ -1,7 +1,11 @@
-# discord-advent-of-code
 Just a simple Advent of Code™️ leaderboard reporting bot for discord and telegram
 
-This guy is supposed to be used on a single private leaderboard. Just a cozy lil' leaderboard for competing group of friends.
+This guy is supposed to be used on a single private leaderboard. Just a cozy lil' leaderboard for competing group of friends. To get today's standings, just send `/today`
+
+<img width="1019" alt="image" src="https://github.com/Malien/discord-advent-of-code/assets/7205038/b481eedc-c46e-41f4-b9a0-5a9c1ce2d780">
+<img width="602" alt="image" src="https://github.com/Malien/discord-advent-of-code/assets/7205038/27d6827d-4ba8-42b0-8ac5-96b6f125465f">
+
+Telegram bot also supports embeddings in chat. Just "@bot_name " into any chat, and boom, the results are in! (This is the most fun and used way to get and share standings table)
 
 ### Setup
 To run this bad boy, supply a couple of env variables, namely:
