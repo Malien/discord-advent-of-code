@@ -1,4 +1,4 @@
-import { Member, MemberDay, memberForDay } from "./member.js"
+import { Member, MemberDay, memberForDay } from "./member.mjs"
 
 export interface Leaderboard {
     ownerId: string

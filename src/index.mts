@@ -1,6 +1,6 @@
 import pino from "pino"
-import discord from "./discord.js"
-import telegram from "./telegram.js"
+import discord from "./discord.mjs"
+import telegram from "./telegram.mjs"
 
 const logger = pino()
 const loggers = {

@@ -59,7 +59,7 @@ export const cmpMembers = (a: MemberDay, b: MemberDay) => {
     if (b.firstStar) {
         return 1
     }
-    return 0
+    return b.localScore - a.localScore
 }
 
 export const solvedFirst = (member: MemberDay): member is MemberFirstStar =>

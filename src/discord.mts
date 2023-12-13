@@ -9,10 +9,10 @@ import {
     APIInteractionGuildMember,
 } from "discord.js"
 import pino, { Logger } from "pino"
-import { fetchLeaderboard } from "./api.js"
-import { currentCompetitionDay, formatLeaderboard } from "./format.js"
-import { AOC_SESSION, DISCORD_TOKEN, LEADERBOARD, YEAR } from "./config.js"
-import { leaderboardForDay } from "./leaderboard.js"
+import { fetchLeaderboard } from "./api.mjs"
+import { currentCompetitionDay, formatLeaderboard } from "./format.mjs"
+import { AOC_SESSION, DISCORD_TOKEN, LEADERBOARD, YEAR } from "./config.mjs"
+import { leaderboardForDay } from "./leaderboard.mjs"
 
 export interface DiscordBotOptions {
     logger?: Logger

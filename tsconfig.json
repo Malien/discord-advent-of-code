@@ -70,7 +70,7 @@
     "forceConsistentCasingInFileNames": true        /* Disallow inconsistently-cased references to the same file. */
   },
   "files": [
-    "src/index.ts",
-    "src/deployCommands.ts"
+    "src/index.mts",
+    "src/deployCommands.mts"
   ]
 }

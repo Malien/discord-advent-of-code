@@ -1,10 +1,10 @@
 import pino, { Logger } from "pino"
 import { Telegraf } from "telegraf"
 import { v4 as uuid } from "uuid"
-import { fetchLeaderboard } from "./api.js"
-import { AOC_SESSION, LEADERBOARD, TELEGRAM_TOKEN, YEAR } from "./config.js"
-import { currentCompetitionDay, formatLeaderboard } from "./format.js"
-import { leaderboardForDay } from "./leaderboard.js"
+import { fetchLeaderboard } from "./api.mjs"
+import { AOC_SESSION, LEADERBOARD, TELEGRAM_TOKEN, YEAR } from "./config.mjs"
+import { currentCompetitionDay, formatLeaderboard } from "./format.mjs"
+import { leaderboardForDay } from "./leaderboard.mjs"
 
 export interface TelegramBotOptions {
     logger?: Logger

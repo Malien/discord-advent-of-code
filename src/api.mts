@@ -1,7 +1,7 @@
 import fetch from "node-fetch"
 import pino from "pino"
-import { Leaderboard } from "./leaderboard.js"
-import { Member } from "./member.js"
+import { Leaderboard } from "./leaderboard.mjs"
+import { Member } from "./member.mjs"
 
 const logger = pino()
 

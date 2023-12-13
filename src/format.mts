@@ -1,13 +1,12 @@
 import { formatInTimeZone } from "date-fns-tz"
-import { YEAR, TIMEZONE } from "./config.js"
-import { LeaderboardDay } from "./leaderboard.js"
-import { MemberDay, cmpLocalScore, cmpFirstStar, cmpSecondStar, cmpMembers, solvedFirst, solvedSecond } from "./member.js"
+import { YEAR, TIMEZONE } from "./config.mjs"
+import { LeaderboardDay } from "./leaderboard.mjs"
+import { MemberDay, cmpLocalScore, cmpFirstStar, cmpSecondStar, cmpMembers, solvedFirst, solvedSecond } from "./member.mjs"
 
 const formatTime = (timestamp: number) =>
     formatInTimeZone(new Date(timestamp * 1000), TIMEZONE, "H:mm")
 
 export interface EntryFormatOptions {
-    position: number
     totalEntries: number
     largestName?: number
     leaderboardPosition: number
@@ -35,7 +34,6 @@ export function formatPositionChange(
 export function formatEntry(
     member: MemberDay,
     {
-        position,
         totalEntries,
         largestName = 0,
         leaderboardPosition,
@@ -49,16 +47,13 @@ export function formatEntry(
     const secondStarTime = member.secondStar
         ? `🌟: ${formatTime(member.secondStar).padEnd(5)}`
         : "         "
-    const positionSpacesRequired =
-        Math.log10(totalEntries) - Math.floor(Math.log10(position)) + 1
-    const positionSpacing = "".padEnd(positionSpacesRequired)
     const positionChange = formatPositionChange(
         leaderboardPosition,
         previousLeaderboardPosition,
         totalEntries
     )
 
-    return `${position}.${positionSpacing}${name}    ${firstStarTime}    ${secondStarTime}    ${positionChange}`
+    return `${name}    ${firstStarTime}    ${secondStarTime}    ${positionChange}`
 }
 
 export function formatLeaderboard({ members, day }: LeaderboardDay) {
@@ -91,7 +86,6 @@ export function formatLeaderboard({ members, day }: LeaderboardDay) {
         .sort(cmpMembers)
         .map((member, idx) =>
             formatEntry(member, {
-                position: idx + 1,
                 totalEntries: activeMembers.length,
                 largestName,
                 leaderboardPosition: positionForToday.get(member.id)!,
