@@ -1,9 +1,7 @@
 import fetch from "node-fetch"
-import pino from "pino"
 import { Leaderboard } from "./leaderboard.mjs"
 import { Member } from "./member.mjs"
-
-const logger = pino()
+import { logger } from "./log.mjs"
 
 export class ResponseError extends Error {
     constructor(

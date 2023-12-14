@@ -6,13 +6,13 @@ import {
     GuildMember,
     InteractionType,
     Interaction,
-    APIInteractionGuildMember,
 } from "discord.js"
 import pino, { Logger } from "pino"
 import { fetchLeaderboard } from "./api.mjs"
 import { currentCompetitionDay, formatLeaderboard } from "./format.mjs"
 import { AOC_SESSION, DISCORD_TOKEN, LEADERBOARD, YEAR } from "./config.mjs"
 import { leaderboardForDay } from "./leaderboard.mjs"
+import { withRequestId } from "./log.mjs"
 
 export interface DiscordBotOptions {
     logger?: Logger
@@ -49,7 +49,9 @@ function interactionDisplay(interaction: Interaction) {
     return {
         type: InteractionType[interaction.type],
         user: userDisplay(interaction.user),
-        member: interaction.member && memberDisplay(interaction.member as GuildMember),
+        member:
+            interaction.member &&
+            memberDisplay(interaction.member as GuildMember),
         guild: interaction.guild && guildDisplay(interaction.guild),
         applicationId: interaction.applicationId,
         channelId: interaction.channelId,
@@ -66,37 +68,42 @@ export default function startDiscordBot({
     })
     client.on("error", logger.error)
 
-    client.on("interactionCreate", async (interaction) => {
+    client.on("interactionCreate", interaction => {
         if (!interaction.isCommand()) return
 
-        logger.info(
-            interactionDisplay(interaction),
-            `Received interaction command`,
-        )
-
-        if (interaction.commandName === "today") {
-            try {
-                interaction.deferReply()
-
-                const leaderboard = await fetchLeaderboard(
-                    LEADERBOARD,
-                    YEAR,
-                    AOC_SESSION,
-                )
-                const forToday = leaderboardForDay(
-                    leaderboard,
-                    currentCompetitionDay(),
-                )
-
-                interaction.editReply(formatLeaderboard(forToday))
-            } catch (e) {
-                logger.error(e, "Error occurred while handling /today command")
-            }
-        } else {
-            logger.warn(
-                `Unknown command interaction ${interaction.commandName}`,
+        withRequestId("Discord", async () => {
+            logger.info(
+                interactionDisplay(interaction),
+                `Received interaction command`,
             )
-        }
+
+            if (interaction.commandName === "today") {
+                try {
+                    interaction.deferReply()
+
+                    const leaderboard = await fetchLeaderboard(
+                        LEADERBOARD,
+                        YEAR,
+                        AOC_SESSION,
+                    )
+                    const forToday = leaderboardForDay(
+                        leaderboard,
+                        currentCompetitionDay(),
+                    )
+
+                    interaction.editReply(formatLeaderboard(forToday))
+                } catch (e) {
+                    logger.error(
+                        e,
+                        "Error occurred while handling /today command",
+                    )
+                }
+            } else {
+                logger.warn(
+                    `Unknown command interaction ${interaction.commandName}`,
+                )
+            }
+        })
     })
 
     client.login(DISCORD_TOKEN)
